@@ -291,7 +291,11 @@
             border-radius: inherit !important;
         }
         #inlinePlayerBox .inline-expand-btn {
-            display: none !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,.58);
+            color: #fff;
         }
         #inlinePlayerBox #inlinePlayerOverlay {
             pointer-events: none;
@@ -329,12 +333,20 @@
         }
 
 
-/* FINAL iPHONE YOUTUBE-STYLE INLINE PLAYER FIX */
+/* FINAL PLAYER BEHAVIOUR */
 #player-screen {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    display: none;
+    visibility: visible;
+    pointer-events: auto;
 }
+.record-chip { border-color: #5a2a2a; }
+.record-chip .record-dot { width: 9px; height: 9px; border-radius: 50%; background: #ff334f; display:inline-block; box-shadow: 0 0 0 2px rgba(255,51,79,.12); }
+.record-chip.recording { background:#4a1018; border-color:#ff334f; color:#fff; }
+.record-chip.recording .record-dot { animation: recordPulse 1s infinite; }
+.pl-record-btn span { color:#ff334f; font-size:18px; line-height:1; }
+.pl-record-btn.recording { background:#4a1018; }
+.pl-record-btn.recording span { animation: recordPulse 1s infinite; }
+@keyframes recordPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.78)} }
 
 .carousel-wrapper {
     width: 100%;
@@ -437,7 +449,7 @@
 
     <div class="chips-container">
         <div class="chip" id="openFilterBtn"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg> Filters (All)</div>
-        <div class="chip"><svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1h14v1z"/></svg> Premium</div>
+        <button class="chip record-chip" id="recordChip" type="button"><span class="record-dot" aria-hidden="true"></span><span id="recordChipLabel">Record</span></button>
         <div class="chip"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg> Watched</div>
         <div class="chip"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Favourite</div>
     </div>
@@ -535,6 +547,7 @@
                     <div class="pl-actions">
                         <button class="pl-act" id="plPipBtn" aria-label="Picture in picture"><svg viewBox="0 0 24 24"><path d="M19 11h-8v6h8v-6zm4 8V4.98C23 3.88 22.1 3 21 3H3c-1.1 0-2 .88-2 1.98V19c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2zm-2 .02H3V4.97h18v14.05z"/></svg></button>
                         <button class="pl-act" id="plLockBtn" aria-label="Lock controls"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></button>
+                        <button class="pl-act pl-record-btn" id="plRecordBtn" aria-label="Record"><span>●</span></button>
                         <button class="pl-act" id="playerSettingsBtn" aria-label="Quality"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
                         <button class="pl-act" id="plExitBtn" aria-label="Exit full screen"><svg viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg></button>
                     </div>
@@ -909,10 +922,9 @@
         }
 
         function getQuickModes() {
-            const modes = { premium: false, watched: false, favourite: false };
+            const modes = { watched: false, favourite: false };
             document.querySelectorAll('.chips-container .chip.active').forEach(ch => {
                 const t = ch.textContent.trim().toLowerCase();
-                if (t.includes('premium')) modes.premium = true;
                 if (t.includes('watched')) modes.watched = true;
                 if (t.includes('favourite')) modes.favourite = true;
             });
@@ -973,7 +985,6 @@
                 if (!(categoryOK && languageOK)) return false;
 
                 const key = channelKey(c);
-                if (quick.premium && !/premium|paid/i.test(`${c.group || ''} ${c.name || ''}`)) return false;
                 if (quick.watched && !watchedChannels.has(key)) return false;
                 if (quick.favourite && !favouriteChannels.has(key)) return false;
                 return true;
@@ -1176,6 +1187,10 @@
 
         // ================= PLAYER =================
         function playChannel(name, url, time) {
+            if (typeof isRecording === 'function' && isRecording() &&
+                String(currentChannelKey || '') !== String(url || '')) {
+                stopRecording();
+            }
             currentStreamUrl = url;
             currentChannelKey = String(url || '');
             const idx = filteredChannels.findIndex(c => String(c.url || '') === String(url || ''));
@@ -1483,9 +1498,154 @@
               plLockBtn = $('plLockBtn');
         let plOpen = false, plSeeking = false, plFs = false, plHideTimer = null, plTimer = null;
 
+        // ================= CHANNEL RECORDING =================
+        let mediaRecorder = null;
+        let recordChunks = [];
+        let recordStream = null;
+
+        function isRecording() {
+            return !!(mediaRecorder && mediaRecorder.state === 'recording');
+        }
+
+        function setRecordUI(on) {
+            const chip = $('recordChip');
+            const playerBtn = $('plRecordBtn');
+            const label = $('recordChipLabel');
+            if (chip) {
+                chip.classList.toggle('recording', !!on);
+                chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+            }
+            if (label) label.textContent = on ? 'Stop Record' : 'Record';
+            if (playerBtn) {
+                playerBtn.classList.toggle('recording', !!on);
+                playerBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            }
+        }
+
+        function getRecordingMime() {
+            if (!window.MediaRecorder) return '';
+            const types = [
+                'video/webm;codecs=vp9,opus',
+                'video/webm;codecs=vp8,opus',
+                'video/webm'
+            ];
+            return types.find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
+        }
+
+        function startRecording() {
+            if (isRecording()) return stopRecording();
+            if (!currentStreamUrl || (!inlineVideo.src && !hls)) {
+                setHint('Pehle channel play karein');
+                return;
+            }
+            const capture = inlineVideo.captureStream || inlineVideo.mozCaptureStream;
+            if (!capture || !window.MediaRecorder) {
+                alert('Is browser mein direct channel recording supported nahi hai. Chrome/Edge desktop ya Android Chrome try karein.');
+                return;
+            }
+
+            try {
+                recordStream = capture.call(inlineVideo);
+                recordChunks = [];
+                const mimeType = getRecordingMime();
+                mediaRecorder = mimeType
+                    ? new MediaRecorder(recordStream, { mimeType })
+                    : new MediaRecorder(recordStream);
+
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data && e.data.size) recordChunks.push(e.data);
+                };
+                mediaRecorder.onerror = () => {
+                    recordChunks = [];
+                    mediaRecorder = null;
+                    try { recordStream?.getTracks?.().forEach(t => t.stop()); } catch (_) {}
+                    recordStream = null;
+                    setRecordUI(false);
+                };
+                mediaRecorder.onstop = () => {
+                    const chunks = recordChunks;
+                    recordChunks = [];
+                    const stream = recordStream;
+                    recordStream = null;
+                    const type = mimeType || 'video/webm';
+                    if (chunks.length) {
+                        const blob = new Blob(chunks, { type });
+                        const safeName = String(inlineChannelName?.textContent || 'channel')
+                            .replace(/[^\w\-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 60) || 'channel';
+                        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = `${safeName}_${stamp}.webm`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        setTimeout(() => URL.revokeObjectURL(a.href), 15000);
+                    }
+                    try { stream?.getTracks?.().forEach(t => t.stop()); } catch (_) {}
+                    mediaRecorder = null;
+                    setRecordUI(false);
+                };
+
+                mediaRecorder.start(1000);
+                setRecordUI(true);
+                setHint('🔴 Recording started');
+            } catch (e) {
+                mediaRecorder = null;
+                recordStream = null;
+                setRecordUI(false);
+                setHint('Recording start nahi ho payi');
+            }
+        }
+
+        function stopRecording() {
+            if (!mediaRecorder) {
+                setRecordUI(false);
+                return;
+            }
+            try {
+                if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+            } catch (_) {
+                mediaRecorder = null;
+                recordStream = null;
+                setRecordUI(false);
+            }
+        }
+
+        $('recordChip')?.addEventListener('click', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            startRecording();
+        });
+        $('plRecordBtn')?.addEventListener('click', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            startRecording();
+        });
+
+
         function currentChannelObj() {
-            const list = filteredChannels.length ? filteredChannels : channels;
-            return list.find(c => String(c.url || '') === String(currentChannelKey || '')) || null;
+            return channels.find(c => String(c.url || '') === String(currentChannelKey || '')) ||
+                   filteredChannels.find(c => String(c.url || '') === String(currentChannelKey || '')) || null;
+        }
+
+        // Keep channel navigation inside the category of the currently playing channel.
+        function channelCategoryKey(c) {
+            if (!c) return '';
+            const inferred = (typeof inferFilterMeta === 'function')
+                ? inferFilterMeta(c.name, c.group, c.language)
+                : {};
+            const category = String(c.filterCategory || inferred.category || '').trim().toLowerCase();
+            if (category) return 'category:' + category;
+            const group = String(c.group || '').split(/[;,|]/).map(x => x.trim().toLowerCase()).filter(Boolean)[0] || '';
+            return group ? 'group:' + group : '';
+        }
+
+        function getCategoryScopedChannels() {
+            const current = currentChannelObj();
+            const key = channelCategoryKey(current);
+            if (!key) return filteredChannels.length ? filteredChannels : channels;
+            const scoped = channels.filter(c => channelCategoryKey(c) === key);
+            return scoped.length ? scoped : (filteredChannels.length ? filteredChannels : channels);
         }
         function layoutPlayer() {
             const iw = window.innerWidth, ih = window.innerHeight;
@@ -1562,17 +1722,18 @@
             $('playerChannelTime').textContent = (c && [c.group, c.language].filter(Boolean).join(' • ')) || 'Live';
             markActiveTile();
         }
-        function onChannelChanged() { syncExpandedInfo(); }   // called from playChannel()
+        function onChannelChanged() {
+            if (plOpen) {
+                syncExpandedInfo();
+                buildTiles();
+            }
+        }   // called from playChannel()
 
         function tileText(c) { const sp = document.createElement('span'); sp.textContent = c.name || 'TV'; return sp; }
         function buildTiles() {
-            const list = filteredChannels.length ? filteredChannels : channels;
+            const list = getCategoryScopedChannels();
             plTiles.innerHTML = '';
             const frag = document.createDocumentFragment();
-            const g = document.createElement('button');
-            g.className = 'pl-tile guide'; g.dataset.guide = '1';
-            g.innerHTML = '<svg viewBox="0 0 48 40"><rect x="4" y="2" width="40" height="28" rx="5" fill="#fff"/><path d="M14 15a14 14 0 0 1 20 0M18 19a8 8 0 0 1 12 0" fill="none" stroke="#b02b3d" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="23.5" r="2.2" fill="#b02b3d"/><rect x="16" y="34" width="16" height="4" rx="2" fill="#fff"/></svg><span>TV GUIDE</span>';
-            frag.appendChild(g);
             list.forEach((c, i) => {
                 const b = document.createElement('button');
                 b.className = 'pl-tile'; b.dataset.i = i; b.dataset.url = String(c.url || ''); b.title = c.name || '';
@@ -1606,7 +1767,7 @@
         plTiles.addEventListener('click', e => {
             const b = e.target.closest('.pl-tile'); if (!b) return;
             if (b.dataset.guide) { closeExpandedPlayer(); return; }
-            const list = filteredChannels.length ? filteredChannels : channels;
+            const list = getCategoryScopedChannels();
             const c = list[+b.dataset.i]; if (!c) return;
             watchedChannels.add(channelKey(c));
             playChannel(c.name, c.url, c.time || 'Live Now');
@@ -1614,20 +1775,27 @@
         });
 
         function openExpandedPlayer(auto) {
-            // Mobile/portrait: never move the video into the fullscreen player.
-            // Keep playback inside #inlinePlayerBox like YouTube's inline player.
-            return;
+            if (!currentStreamUrl) return;
             plVideoBox.insertBefore(inlineVideo, plVideoBox.firstChild);
             plOpen = true;
-            plStage.classList.remove('locked'); plLockBtn.classList.remove('on');
+            plStage.classList.remove('locked');
+            plLockBtn.classList.remove('on');
             playerScreen.style.display = 'block';
             layoutPlayer();
+            syncExpandedInfo();
+            buildTiles();
+            updatePlayPauseIcon();
+            updateSeekUI();
+            showControls();
+            clearInterval(plTimer);
+            plTimer = setInterval(updateSeekUI, 500);
             if (!auto) {
                 inlineVideo.muted = false;
-                inlineVideo.play().catch(() => { inlineVideo.muted = true; inlineVideo.play().catch(() => {}); });
+                inlineVideo.play().catch(() => {
+                    inlineVideo.muted = true;
+                    inlineVideo.play().catch(() => {});
+                });
             }
-            syncExpandedInfo(); buildTiles(); updatePlayPauseIcon(); updateSeekUI(); showControls();
-            clearInterval(plTimer); plTimer = setInterval(updateSeekUI, 500);
         }
         function closeExpandedPlayer() {
             plOpen = false; plFs = false;
@@ -1648,18 +1816,25 @@
         const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
         function onOrient() {
             const portrait = window.innerHeight > window.innerWidth;
-            if (isTouch && portrait !== lastPortrait) {
-                lastPortrait = portrait;
-                // Never move the video into the expanded/landscape player.
-                // Playback remains inside #inlinePlayerBox.
-                if (plOpen) closeExpandedPlayer();
+            if (portrait !== lastPortrait) lastPortrait = portrait;
+            if (!portrait && !plOpen && currentStreamUrl) {
+                openExpandedPlayer(true);
+                return;
             }
-            if (plOpen) layoutPlayer();
+            if (plOpen) {
+                layoutPlayer();
+                buildTiles();
+                syncExpandedInfo();
+            }
         }
         ['resize', 'orientationchange'].forEach(ev => window.addEventListener(ev, onOrient));
 
         // Keep playback inline on mobile/portrait. Do not open a separate/fullscreen player.
-        $('inlineExpandBtn')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); });
+        $('inlineExpandBtn')?.addEventListener('click', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            openExpandedPlayer(false);
+        });
         $('closePlayerBtn').addEventListener('click', closeExpandedPlayer);
         $('plExitBtn').addEventListener('click', closeExpandedPlayer);
         $('plPlayBtn').addEventListener('click', () => { inlineVideo.paused ? inlineVideo.play().catch(() => {}) : inlineVideo.pause(); });
@@ -1724,13 +1899,13 @@
         });
 
         function playAdjacentChannel(direction) {
-            const list = filteredChannels.length ? filteredChannels : channels;
+            const list = getCategoryScopedChannels();
             if (!list.length) return;
             let index = list.findIndex(c => String(c.url || '') === String(currentChannelKey || ''));
-            if (index < 0) index = currentChannelIndex >= 0 ? Math.min(currentChannelIndex, list.length - 1) : 0;
+            if (index < 0) index = 0;
             const nextIndex = (index + direction + list.length) % list.length;
             const channel = list[nextIndex];
-            currentChannelIndex = nextIndex;
+            currentChannelIndex = channels.findIndex(c => String(c.url || '') === String(channel.url || ''));
             playChannel(channel.name, channel.url, channel.time || 'Live Now');
         }
 
@@ -1803,6 +1978,34 @@
             }, {passive:false});
         }
 
+        // Player-screen swipe: next/previous channel stays inside the active category.
+        let playerSwipeStartX = 0, playerSwipeStartY = 0, playerSwipeActive = false;
+        playerScreen.addEventListener('touchstart', e => {
+            if (!plOpen || !e.touches || e.touches.length !== 1) return;
+            const target = e.target;
+            if (target.closest && target.closest('button, input, .pl-tiles, #quality-modal')) return;
+            playerSwipeStartX = e.touches[0].clientX;
+            playerSwipeStartY = e.touches[0].clientY;
+            playerSwipeActive = true;
+        }, { passive: true });
+
+        playerScreen.addEventListener('touchend', e => {
+            if (!playerSwipeActive || !e.changedTouches || !e.changedTouches.length) return;
+            playerSwipeActive = false;
+            const dx = e.changedTouches[0].clientX - playerSwipeStartX;
+            const dy = e.changedTouches[0].clientY - playerSwipeStartY;
+            if (Math.abs(dx) < 55 || Math.abs(dx) <= Math.abs(dy) * 1.15) return;
+            e.preventDefault();
+            playAdjacentChannel(dx < 0 ? 1 : -1);
+            try {
+                inlineVideo.animate(
+                    [{ transform: `translateX(${dx < 0 ? 45 : -45}%)`, opacity: .12 },
+                     { transform: 'translateX(0)', opacity: 1 }],
+                    { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' }
+                );
+            } catch (_) {}
+        }, { passive: false });
+
         // Quality Settings
         const playerSettingsBtn = document.getElementById('playerSettingsBtn');
         const qualityModal = document.getElementById('quality-modal');
@@ -1858,7 +2061,13 @@
         });
         // Auto-generated filter chips are bound by bindFilterChips().
         bindFilterChips();
-        document.querySelectorAll('.chips-container .chip').forEach((chip, i) => { if (i > 0) chip.addEventListener('click', () => { chip.classList.toggle('active'); renderChannels(applyFilters(channels)); }); });
+        document.querySelectorAll('.chips-container .chip').forEach(chip => {
+            if (chip.id === 'recordChip' || chip.id === 'openFilterBtn') return;
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('active');
+                renderChannels(applyFilters(channels));
+            });
+        });
 
         // Data Usage
         const dataUsageBtn = document.getElementById('dataUsageBtn');
@@ -2008,191 +2217,6 @@
         };
     </script>
 
-<!-- ===== AUTO AUDIO LANGUAGE / LIVE DUB (added) ===== -->
-<script>
-(function () {
-  const LANGS = [
-    ['Hindi','हिंदी','hi-IN','hi'],['Marathi','मराठी','mr-IN','mr'],['Bengali','বাংলা','bn-IN','bn'],
-    ['Tamil','தமிழ்','ta-IN','ta'],['Telugu','తెలుగు','te-IN','te'],['Kannada','ಕನ್ನಡ','kn-IN','kn'],
-    ['Malayalam','മലയാളം','ml-IN','ml'],['Gujarati','ગુજરાતી','gu-IN','gu'],['Punjabi','ਪੰਜਾਬੀ','pa-IN','pa'],
-    ['Odia','ଓଡ଼ିଆ','or-IN','or'],['Assamese','অসমীয়া','as-IN','as'],['Urdu','اردو','ur-IN','ur'],
-    ['Nepali','नेपाली','ne-NP','ne'],['Sanskrit','संस्कृत','sa-IN','sa'],['Konkani','कोंकणी','kok-IN','gom'],
-    ['Maithili','मैथिली','mai-IN','mai'],['Sindhi','सिन्धी','sd-IN','sd'],['Dogri','डोगरी','doi-IN','doi'],
-    ['Kashmiri','کٲشُر','ks-IN','ks'],['Manipuri','মৈতৈলোন্','mni-IN','mni-Mtei'],['Santali','ᱥᱟᱱᱛᱟᱲᱤ','sat-IN','sat'],
-    ['Bodo','बर\'','brx-IN','brx'],['English','English','en-IN','en']
-  ];
-  const byName = n => LANGS.find(l => l[0].toLowerCase() === String(n || '').toLowerCase());
-  const byCode = c => LANGS.find(l => l[3] === c || l[2].split('-')[0] === String(c).split('-')[0]);
-  let st = { target: 'off' };
-  try { st = Object.assign(st, JSON.parse(localStorage.getItem('auto_lang') || '{}')); } catch (e) {}
-  const save = () => { try { localStorage.setItem('auto_lang', JSON.stringify(st)); } catch (e) {} };
-
-  // ---- UI: toast + caption ----
-  const css = document.createElement('style');
-  css.textContent = `#alToast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:rgba(30,30,30,.95);color:#fff;padding:8px 14px;border-radius:18px;font-size:13px;z-index:9500;display:none;max-width:88%;text-align:center}
-  #alCap{position:fixed;left:50%;bottom:170px;transform:translateX(-50%);background:rgba(0,0,0,.72);color:#fff;padding:6px 12px;border-radius:8px;font-size:15px;z-index:9400;display:none;max-width:92%;text-align:center}
-  #alPage{position:fixed;inset:0;background:#121212;z-index:9600;display:none;flex-direction:column;overflow-y:auto;max-width:430px;margin:0 auto}
-  #alPage h3{padding:18px 16px 4px;font-size:18px}#alPage p{padding:0 16px 10px;color:#888;font-size:12px}
-  .alRow{display:flex;justify-content:space-between;padding:15px 16px;border-bottom:1px solid #1f1f1f;font-size:15px;cursor:pointer}
-  .alRow.on{color:#ff4d63;font-weight:700}.alRow small{color:#777;margin-left:8px}`;
-  document.head.appendChild(css);
-  const toastEl = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'alToast' }));
-  const capEl = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'alCap' }));
-  let tt; const toast = m => { toastEl.textContent = m; toastEl.style.display = 'block'; clearTimeout(tt); tt = setTimeout(() => toastEl.style.display = 'none', 3500); };
-  const page = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'alPage' }));
-  function renderPage() {
-    page.innerHTML = '<div class="alRow" id="alClose">← Back</div><h3>Auto Audio Language</h3><p>Channel ki language alag ho to is language me audio/dub apne aap select hoga. Pehle stream ka original audio track dhundhta hai, nahi mila to live translate + voice.</p>' +
-      `<div class="alRow ${st.target==='off'?'on':''}" data-c="off">Off (original audio)</div>` +
-      LANGS.map(l => `<div class="alRow ${st.target===l[3]?'on':''}" data-c="${l[3]}"><span>${l[1]}<small>${l[0]}</small></span></div>`).join('');
-    page.querySelector('#alClose').onclick = () => page.style.display = 'none';
-    page.querySelectorAll('[data-c]').forEach(r => r.onclick = () => {
-      st.target = r.dataset.c; save(); renderPage(); page.style.display = 'none';
-      label(); run(true);
-    });
-  }
-  const openPage = () => { renderPage(); page.style.display = 'flex'; };
-  const setBtn = document.getElementById('contentLangBtn');
-  if (setBtn) {
-    const row = setBtn.cloneNode(true); row.id = 'alSettingsBtn';
-    row.querySelector('.settings-item-left').lastChild.textContent = ' Auto Audio / Dub Language';
-    row.onclick = openPage; setBtn.after(row);
-  }
-  const pip = document.getElementById('plPipBtn');
-  if (pip) {
-    const b = document.createElement('button'); b.className = 'pl-act'; b.setAttribute('aria-label', 'Audio language');
-    b.innerHTML = '<span style="color:#fff;font-weight:800;font-size:15px">अA</span>'; b.onclick = openPage; pip.before(b);
-  }
-
-  // ---- Step 1: pick matching audio track from the stream ----
-  let trackDone = false, lastKey = '';
-  function pickTrack() {
-    const t = byCode(st.target); if (!t) return false;
-    const match = a => { const s = ((a.lang || a.language || '') + ' ' + (a.name || a.label || '')).toLowerCase(); return s.includes(t[3]) || s.includes(t[2].split('-')[0]) || s.includes(t[0].toLowerCase()); };
-    try {
-      if (typeof hls !== 'undefined' && hls && hls.audioTracks && hls.audioTracks.length > 1) {
-        const i = hls.audioTracks.findIndex(match);
-        if (i >= 0) { hls.audioTrack = i; return true; }
-      }
-      const v = document.getElementById('inlineVideo');
-      if (v && v.audioTracks && v.audioTracks.length > 1) {
-        let f = -1; for (let i = 0; i < v.audioTracks.length; i++) if (match(v.audioTracks[i])) f = i;
-        if (f >= 0) { for (let i = 0; i < v.audioTracks.length; i++) v.audioTracks[i].enabled = i === f; return true; }
-      }
-    } catch (e) {}
-    return false;
-  }
-
-  // ---- Step 2: live dub (mic -> speech-to-text -> translate -> voice) ----
-  let rec = null, dubOn = false, speaking = false;
-  async function tr(text, tl) {
-    try { const r = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + tl + '&dt=t&q=' + encodeURIComponent(text)); const j = await r.json(); return j[0].map(x => x[0]).join(''); }
-    catch (e) { try { const r = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=autodetect|' + tl); return (await r.json()).responseData.translatedText; } catch (e2) { return text; } }
-  }
-  function speak(text, t) {
-    capEl.textContent = text; capEl.style.display = 'block';
-    const v = document.getElementById('inlineVideo'), vol = v ? v.volume : 1;
-    const u = new SpeechSynthesisUtterance(text); u.lang = t[2];
-    const voice = speechSynthesis.getVoices().find(x => x.lang.replace('_', '-').toLowerCase().startsWith(t[2].split('-')[0]));
-    if (voice) u.voice = voice;
-    speaking = true; if (v) v.volume = 0.1;
-    const end = () => { speaking = false; if (v) v.volume = vol; setTimeout(() => capEl.style.display = 'none', 1500); };
-    u.onend = u.onerror = end; speechSynthesis.speak(u);
-  }
-  const status = m => { capEl.textContent = m; capEl.style.display = 'block'; };
-  function startDub(srcCode) {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { status('❌ Is browser mein speech recognition nahi hai (Safari/PWA). Android Chrome try karo'); return; }
-    const t = byCode(st.target), s = byCode(srcCode || 'hi');
-    dubOn = true; const vv = document.getElementById('inlineVideo'); if (vv) { vv.muted = false; vv.volume = 1; try { vv.play(); } catch (e) {} } rec = new SR(); rec.continuous = true; rec.interimResults = false; rec.lang = s ? s[2] : 'hi-IN';
-    rec.onresult = async e => {
-      if (speaking) return;
-      const txt = e.results[e.results.length - 1][0].transcript.trim(); if (!txt) return;
-      status('Suna: ' + txt); const out = await tr(txt, t[3]); speak(out, t);
-    };
-    rec.onend = () => { if (dubOn) setTimeout(() => { try { rec.start(); } catch (e) {} }, 300); };
-    rec.onstart = () => status('🎤 Sun raha hoon (' + rec.lang + ')… TV ki awaaz speaker se aane do');
-    rec.onerror = e => { status('Mic error: ' + e.error); if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { dubOn = false; } };
-    try { rec.start(); toast('Live dub ON: ' + (s ? s[0] : 'Auto') + ' → ' + t[0] + ' (speaker se sunna, mic ko audio chahiye)'); } catch (e) {}
-  }
-  function stopDub() { dubOn = false; try { rec && rec.stop(); } catch (e) {} speechSynthesis.cancel(); capEl.style.display = 'none'; }
-
-  // ---- Auto logic per channel ----
-  function apply() {
-    if (st.target === 'off' || trackDone) return;
-    const ch = typeof currentChannelObj === 'function' ? currentChannelObj() : null;
-    const src = ch && byName(ch.language);
-    if (src && src[3] === st.target) { trackDone = true; return; }   // already in your language
-    if (pickTrack()) { trackDone = true; toast('Audio track: ' + byCode(st.target)[0]); return; }
-  }
-  function run(gesture) {
-    trackDone = false; stopDub(); clearTimeout(window.__alT);
-    if (st.target === 'off') { toast('Audio translate off'); return; }
-    const ch = typeof currentChannelObj === 'function' ? currentChannelObj() : null;
-    if (!ch) { toast('Pehle koi channel chalao, phir language chuno'); return; }
-    const src = ch && byName(ch.language);
-    if (src && src[3] === st.target) { trackDone = true; toast('Channel pehle se ' + src[0] + ' mein hai'); return; }
-    apply(); if (trackDone) return;
-    const go = () => { apply(); if (trackDone || (typeof hls === 'undefined')) return; startDub(src ? src[3] : null); };
-    if (gesture) go(); else window.__alT = setTimeout(go, 2500);
-  }
-  const chip = document.createElement('div'); chip.className = 'chip'; chip.id = 'alChip';
-  const fb = document.getElementById('openFilterBtn'); if (fb) fb.after(chip);
-  chip.onclick = openPage;
-  function label() { const t = byCode(st.target); chip.textContent = '🌐 Audio: ' + (st.target === 'off' || !t ? 'Translate' : t[0]); chip.style.borderColor = st.target === 'off' ? '' : '#ff4d63'; }
-  label();
-  const _pc = window.playChannel;
-  window.playChannel = function () { const r = _pc.apply(this, arguments); run(false); return r; };
-  setInterval(apply, 1500);
-})();
-</script>
-
-<!-- ===== NETWORK PICKER on Premium chip (added) ===== -->
-<script>
-(function () {
-  const NETS = [
-    ['Star (Hotstar/Vijay/Asianet)', /\bstar\b|hotstar|asianet|vijay|jalsha|pravah|suvarna|star maa|utsav/i],
-    ['Sony', /\bsony\b|\bsab\b|\bpal\b|sony ten|aath|\bmax\b|yay!?|bbc earth/i],
-    ['Zee', /\bzee\b|&\s?tv|and\s?tv|&\s?pictures|and pictures|big magic|anmol|zing|wion|24\s?(taas|ghanta)/i],
-    ['Colors / Viacom18', /colors|\bmtv\b|nick|comedy central|vh1|news18|cnbc|rishtey/i],
-    ['Sun / South', /\bsun\b|surya|udaya|gemini|kushi|adithya|chutti|chintu|kalaignar|raj (tv|news|digital)/i],
-    ['Discovery', /discovery|animal planet|\btlc\b|hgtv|eurosport/i],
-    ['Disney', /disney|hungama|marvel|pixar/i],
-    ['Doordarshan (DD)', /\bdd\b|doordarshan|lok sabha|rajya sabha|sansad/i],
-    ['News (Aaj Tak/ABP/NDTV/TV9)', /aaj\s?tak|india today|abp|ndtv|tv9|republic|times now|india tv|zee news|news18|cnn|bbc news|lokmat|majha|saam/i]
-  ];
-  let sel = localStorage.getItem('net_filter') || '';
-  const chips = document.querySelector('.chips-container');
-  const prem = chips && [...chips.querySelectorAll('.chip')].find(c => /premium/i.test(c.textContent));
-  if (!prem) return;
-  const css = document.createElement('style');
-  css.textContent = '#netPage{position:fixed;inset:0;background:#121212;z-index:9600;display:none;flex-direction:column;overflow-y:auto;max-width:430px;margin:0 auto}#netPage h3{padding:18px 16px 8px;font-size:18px}.nRow{display:flex;justify-content:space-between;padding:15px 16px;border-bottom:1px solid #1f1f1f;font-size:15px;cursor:pointer}.nRow.on{color:#ff4d63;font-weight:700}.nRow small{color:#777}';
-  document.head.appendChild(css);
-  const page = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'netPage' }));
-  const label = () => { prem.lastChild.textContent = ' ' + (sel ? sel.split(' ')[0] : 'Premium'); prem.style.borderColor = sel ? '#ff4d63' : ''; };
-  const refresh = () => { try { renderChannels(applyFilters(channels)); } catch (e) {} };
-  function open() {
-    const list = (typeof channels !== 'undefined' && Array.isArray(channels)) ? channels : [];
-    const rows = NETS.map(n => [n[0], list.filter(c => n[1].test(String(c.name || ''))).length]).filter(r => r[1] > 0);
-    page.innerHTML = '<div class="nRow" id="nBack">← Back</div><h3>Network / Premium</h3>' +
-      `<div class="nRow ${sel ? '' : 'on'}" data-n="">Sab channels<small>${list.length}</small></div>` +
-      rows.map(r => `<div class="nRow ${sel === r[0] ? 'on' : ''}" data-n="${r[0]}"><span>${r[0]}</span><small>${r[1]}</small></div>`).join('') +
-      (rows.length ? '' : '<p style="padding:16px;color:#888">Playlist load hone ke baad networks apne aap dikhenge.</p>');
-    page.querySelector('#nBack').onclick = () => page.style.display = 'none';
-    page.querySelectorAll('[data-n]').forEach(r => r.onclick = () => {
-      sel = r.dataset.n; localStorage.setItem('net_filter', sel); label(); page.style.display = 'none'; refresh();
-    });
-    page.style.display = 'flex';
-  }
-  chips.addEventListener('click', e => { if (prem.contains(e.target)) { e.stopImmediatePropagation(); e.preventDefault(); open(); } }, true);
-  const _af = window.applyFilters;
-  window.applyFilters = function () {
-    const out = _af.apply(this, arguments);
-    const n = NETS.find(x => x[0] === sel);
-    return n ? out.filter(c => n[1].test(String(c.name || ''))) : out;
-  };
-  label(); if (sel) setTimeout(refresh, 1500);
-})();
-</script>
 
 </body>
 </html>

@@ -246,6 +246,37 @@
             }
         }
 
+
+        /* Display / Audio Settings */
+        .display-settings-page { position: fixed; inset: 0; background:#121212; z-index: 3700; display:none; flex-direction:column; overflow-y:auto; }
+        .display-settings-content { padding: 4px 16px 110px; }
+        .display-setting-card { background:#1b1b1b; border:1px solid #2b2b2b; border-radius:14px; padding:14px; margin:12px 0; }
+        .display-setting-title { font-size:14px; font-weight:700; color:#fff; margin-bottom:10px; }
+        .display-options { display:flex; flex-wrap:wrap; gap:8px; }
+        .display-option { flex:1 1 calc(50% - 8px); min-width:120px; padding:11px 10px; border-radius:11px; border:1px solid #444; background:#242424; color:#ddd; text-align:center; cursor:pointer; font-size:13px; font-weight:650; }
+        .display-option.active { background:#6b2d3e; border-color:#a81c2f; color:#fff; }
+        .display-help { color:#777; font-size:11px; line-height:1.45; margin-top:8px; }
+        .display-save { position:sticky; bottom:0; margin-top:10px; padding:15px 16px calc(15px + env(safe-area-inset-bottom)); background:linear-gradient(transparent,#121212 18%); }
+        .display-save button { width:100%; padding:14px; border:0; border-radius:30px; background:#a81c2f; color:#fff; font-size:16px; font-weight:800; cursor:pointer; }
+        .display-status { text-align:center; color:#4caf50; font-size:13px; min-height:18px; margin-top:8px; }
+        .settings-item-right .mini-value { color:#888; font-size:13px; }
+        #inlineVideo.display-vivid, #player-screen.display-vivid .pl-video video { filter: saturate(1.22) contrast(1.08) brightness(1.05); }
+        #inlineVideo.display-cinema, #player-screen.display-cinema .pl-video video { filter: saturate(.92) contrast(1.04) brightness(.96); }
+        #inlineVideo.display-standard, #player-screen.display-standard .pl-video video { filter:none; }
+        #inlineVideo.ratio-fit, #player-screen.ratio-fit .pl-video video { object-fit:contain !important; }
+        #inlineVideo.ratio-full, #player-screen.ratio-full .pl-video video { object-fit:cover !important; }
+        #inlineVideo.ratio-stretch, #player-screen.ratio-stretch .pl-video video { object-fit:fill !important; }
+        #inlineVideo.ratio-169, #player-screen.ratio-169 .pl-video video { object-fit:contain !important; aspect-ratio:16/9; }
+        #inlineVideo.ratio-43, #player-screen.ratio-43 .pl-video video { object-fit:contain !important; aspect-ratio:4/3; }
+        .atmos-note { font-size:11px; color:#777; margin-top:7px; line-height:1.4; }
+
+
+        @media (max-width: 600px) {
+            .display-settings-page { width:100%; max-width:430px; left:50%; right:auto; transform:translateX(-50%); }
+            .display-settings-content { padding-left:14px; padding-right:14px; }
+            .display-option { min-height:44px; display:flex; align-items:center; justify-content:center; }
+        }
+
         /* Loading Spinner */
         .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid #333; border-top: 3px solid #a81c2f; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; vertical-align: middle; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -467,8 +498,66 @@
             <div class="settings-item"><div class="settings-item-left"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> Autoplay on Home</div><div class="settings-item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div></div>
             <div class="settings-item"><div class="settings-item-left"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7z"/></svg> Classic TV Guide</div><div class="settings-item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div></div>
             <div class="settings-item" id="dataUsageBtn"><div class="settings-item-left"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19h3.64C9.53 20.21 10.71 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg> Data Usage & Playlist URL</div><div class="settings-item-right">&gt;</div></div>
+            <div class="settings-item" id="displaySettingsBtn"><div class="settings-item-left"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H4V5zm-2 12h20v2H2v-2z"/></svg> Display & Audio</div><div class="settings-item-right"><span class="mini-value" id="displaySummary">Auto • Fit</span> &gt;</div></div>
             <div class="settings-item"><div class="settings-item-left"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg> Parental Controls</div><div class="settings-item-right">&gt;</div></div>
             <div class="settings-item" style="border-bottom: none;"><div class="settings-item-left"><svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.41L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg> Sign Out</div><div class="settings-item-right">&gt;</div></div>
+        </div>
+    </div>
+
+
+    <!-- Display / Audio Settings Page -->
+    <div class="display-settings-page" id="displaySettingsPage">
+        <div class="settings-header">
+            <button class="back-btn" id="closeDisplaySettingsBtn"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41z"/></svg></button>
+            <span class="settings-title">Display & Audio</span>
+        </div>
+        <div class="display-settings-content">
+            <div class="display-setting-card">
+                <div class="display-setting-title">🔄 Display Rotate</div>
+                <div class="display-options" id="rotateOptions">
+                    <button class="display-option active" data-value="auto">Auto</button>
+                    <button class="display-option" data-value="portrait">Portrait</button>
+                    <button class="display-option" data-value="landscape">Landscape</button>
+                </div>
+                <div class="display-help">Auto follows the phone orientation. Portrait/Landscape also tries the browser orientation lock when supported.</div>
+            </div>
+
+            <div class="display-setting-card">
+                <div class="display-setting-title">🖥️ Display Quality</div>
+                <div class="display-options" id="displayQualityOptions">
+                    <button class="display-option active" data-value="standard">Standard</button>
+                    <button class="display-option" data-value="vivid">Vivid</button>
+                    <button class="display-option" data-value="cinema">Cinema</button>
+                </div>
+                <div class="display-help">This changes the screen rendering. It does not change the stream's original resolution/bitrate.</div>
+            </div>
+
+            <div class="display-setting-card">
+                <div class="display-setting-title">📐 Screen Ratio</div>
+                <div class="display-options" id="screenRatioOptions">
+                    <button class="display-option active" data-value="fit">Fit</button>
+                    <button class="display-option" data-value="full">Full</button>
+                    <button class="display-option" data-value="stretch">Stretch</button>
+                    <button class="display-option" data-value="169">16:9</button>
+                    <button class="display-option" data-value="43">4:3</button>
+                </div>
+                <div class="display-help">Fit keeps the complete picture. Full fills the screen and may crop the sides/top. Stretch fills the box without preserving the source ratio.</div>
+            </div>
+
+            <div class="display-setting-card">
+                <div class="display-setting-title">🔊 Dolby Atmos audio</div>
+                <label class="settings-item" style="padding:8px 0;border-bottom:0;">
+                    <div class="settings-item-left"><span>Immersive audio preference</span></div>
+                    <div class="settings-item-right">
+                        <label class="switch"><input type="checkbox" id="dolbyAtmosToggle"><span class="slider"></span></label>
+                    </div>
+                </label>
+                <div class="atmos-note">The switch is saved and used as an audio preference. Actual Dolby Atmos output still depends on the phone/browser, audio device and stream's audio format; a web page cannot create Dolby Atmos from a non-Atmos stream.</div>
+            </div>
+        </div>
+        <div class="display-save">
+            <button id="saveDisplaySettingsBtn">Save Display Settings</button>
+            <div class="display-status" id="displaySettingsStatus"></div>
         </div>
     </div>
 
@@ -604,11 +693,11 @@
 
     <!-- Bottom Nav -->
     <nav class="bottom-nav">
-        <a href="#" class="nav-item"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></a>
-        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7z"/></svg><span>Live TV</span></a>
-        <a href="#" class="nav-item"><svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4zM4 18V9h16v9H4z"/></svg><span>Free</span></a>
-        <a href="#" class="nav-item"><svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1h14v1z"/></svg><span>Premium</span></a>
-        <a href="#" class="nav-item"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg><span>Trending</span></a>
+        <a href="#" class="nav-item" data-nav="home"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></a>
+        <a href="#" class="nav-item active" data-nav="live"><svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7z"/></svg><span>Live TV</span></a>
+        <a href="#" class="nav-item" data-nav="free"><svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4zM4 18V9h16v9H4z"/></svg><span>Free</span></a>
+        <a href="#" class="nav-item" data-nav="premium"><svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1h14v1z"/></svg><span>Premium</span></a>
+        <a href="#" class="nav-item" data-nav="trending"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6 0-1.66.69-3.14 1.78-4.22L13 11h7V4l-2.35 2.35z"/></svg><span>Trending</span></a>
     </nav>
 
     <script>
@@ -1778,8 +1867,11 @@
             if (!currentStreamUrl) return;
             plVideoBox.insertBefore(inlineVideo, plVideoBox.firstChild);
             plOpen = true;
+            refreshDisplayClasses();
+            applyOrientationPreference();
             plStage.classList.remove('locked');
             plLockBtn.classList.remove('on');
+            refreshDisplayClasses();
             playerScreen.style.display = 'block';
             layoutPlayer();
             syncExpandedInfo();
@@ -2192,6 +2284,216 @@
         searchInput.addEventListener('input', (e) => {
             renderSearchResults(e.target.value);
         });
+
+
+        // ================= DISPLAY & AUDIO SETTINGS =================
+        const DISPLAY_SETTINGS_KEY = 'santv_display_settings_v2';
+        const displaySettingsPage = document.getElementById('displaySettingsPage');
+        const displaySettingsBtn = document.getElementById('displaySettingsBtn');
+        const closeDisplaySettingsBtn = document.getElementById('closeDisplaySettingsBtn');
+        const saveDisplaySettingsBtn = document.getElementById('saveDisplaySettingsBtn');
+        const displaySettingsStatus = document.getElementById('displaySettingsStatus');
+        const dolbyAtmosToggle = document.getElementById('dolbyAtmosToggle');
+
+        const defaultDisplaySettings = {
+            rotate: 'auto',
+            quality: 'standard',
+            ratio: 'fit',
+            atmos: false
+        };
+        let displaySettings = {...defaultDisplaySettings};
+
+        function loadDisplaySettings() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(DISPLAY_SETTINGS_KEY) || 'null');
+                if (saved && typeof saved === 'object') displaySettings = {...defaultDisplaySettings, ...saved};
+            } catch (_) {}
+        }
+
+        function setOptionGroup(groupId, value) {
+            document.querySelectorAll('#' + groupId + ' .display-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === value);
+            });
+        }
+
+        function applyDisplaySettings() {
+            const q = displaySettings.quality;
+            const r = displaySettings.ratio;
+
+            inlineVideo.classList.remove('display-standard','display-vivid','display-cinema',
+                                         'ratio-fit','ratio-full','ratio-stretch','ratio-169','ratio-43');
+            inlineVideo.classList.add('display-' + q, 'ratio-' + r);
+
+            playerScreen.classList.remove('display-standard','display-vivid','display-cinema',
+                                          'ratio-fit','ratio-full','ratio-stretch','ratio-169','ratio-43');
+            playerScreen.classList.add('display-' + q, 'ratio-' + r);
+
+            dolbyAtmosToggle.checked = !!displaySettings.atmos;
+            setOptionGroup('rotateOptions', displaySettings.rotate);
+            setOptionGroup('displayQualityOptions', displaySettings.quality);
+            setOptionGroup('screenRatioOptions', displaySettings.ratio);
+
+            const summary = document.getElementById('displaySummary');
+            if (summary) {
+                const rot = displaySettings.rotate.charAt(0).toUpperCase() + displaySettings.rotate.slice(1);
+                const ratio = displaySettings.ratio === '169' ? '16:9' :
+                              displaySettings.ratio === '43' ? '4:3' :
+                              displaySettings.ratio.charAt(0).toUpperCase() + displaySettings.ratio.slice(1);
+                summary.textContent = rot + ' • ' + ratio;
+            }
+        }
+
+        async function applyOrientationPreference() {
+            const mode = displaySettings.rotate;
+            try {
+                if (screen.orientation && screen.orientation.lock) {
+                    if (mode === 'portrait') await screen.orientation.lock('portrait');
+                    else if (mode === 'landscape') await screen.orientation.lock('landscape');
+                    else if (screen.orientation.unlock) screen.orientation.unlock();
+                }
+            } catch (_) {
+                // iOS Safari and some browsers do not permit orientation locking from a normal web page.
+            }
+            if (plOpen) {
+                layoutPlayer();
+                buildTiles();
+                syncExpandedInfo();
+            }
+        }
+
+        function readDisplayControls() {
+            const active = id => document.querySelector('#' + id + ' .display-option.active')?.dataset.value;
+            displaySettings.rotate = active('rotateOptions') || 'auto';
+            displaySettings.quality = active('displayQualityOptions') || 'standard';
+            displaySettings.ratio = active('screenRatioOptions') || 'fit';
+            displaySettings.atmos = !!dolbyAtmosToggle.checked;
+        }
+
+        loadDisplaySettings();
+        applyDisplaySettings();
+
+        displaySettingsBtn?.addEventListener('click', () => {
+            if (settingsPage) settingsPage.style.display = 'none';
+            applyDisplaySettings();
+            displaySettingsPage.style.display = 'flex';
+        });
+        closeDisplaySettingsBtn?.addEventListener('click', () => {
+            displaySettingsPage.style.display = 'none';
+            if (settingsPage) settingsPage.style.display = 'flex';
+        });
+
+        document.querySelectorAll('#rotateOptions .display-option, #displayQualityOptions .display-option, #screenRatioOptions .display-option')
+            .forEach(btn => btn.addEventListener('click', () => {
+                const group = btn.parentElement;
+                group.querySelectorAll('.display-option').forEach(x => x.classList.remove('active'));
+                btn.classList.add('active');
+            }));
+
+        saveDisplaySettingsBtn?.addEventListener('click', async () => {
+            readDisplayControls();
+            localStorage.setItem(DISPLAY_SETTINGS_KEY, JSON.stringify(displaySettings));
+            applyDisplaySettings();
+            await applyOrientationPreference();
+            displaySettingsStatus.textContent = '✓ Display settings saved';
+            setTimeout(() => {
+                displaySettingsStatus.textContent = '';
+                displaySettingsPage.style.display = 'none';
+                if (settingsPage) settingsPage.style.display = 'flex';
+            }, 700);
+        });
+
+        // Keep display settings active even when the video element moves into the expanded player.
+        function refreshDisplayClasses() {
+            applyDisplaySettings();
+        }
+
+        // ================= BOTTOM NAV =================
+        const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
+
+        function closeAllOverlayPages() {
+            [settingsPage, filterPage, dataUsagePage, displaySettingsPage, searchPage].forEach(page => {
+                if (page) page.style.display = 'none';
+            });
+        }
+
+        function setBottomNavActive(name) {
+            bottomNavItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.nav === name);
+            });
+        }
+
+        function safeRender(list) {
+            const safeList = Array.isArray(list) ? list : [];
+            try {
+                renderChannels(safeList);
+            } catch (err) {
+                console.error('Channel render error:', err);
+                const container = document.getElementById('channelListContainer');
+                if (container) {
+                    container.innerHTML = '<div style="padding:30px;text-align:center;color:#888;">No channels available</div>';
+                }
+            }
+        }
+
+        function homeView() {
+            closeAllOverlayPages();
+            setBottomNavActive('home');
+            safeRender(channels);
+            document.getElementById('channelListContainer')?.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function liveView() {
+            closeAllOverlayPages();
+            setBottomNavActive('live');
+            safeRender(applyFilters(channels));
+            document.getElementById('channelListContainer')?.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function freeView() {
+            closeAllOverlayPages();
+            setBottomNavActive('free');
+            const free = channels.filter(c => {
+                const text = `${c?.name || ''} ${c?.group || ''}`.toLowerCase();
+                return c?.premium !== true && c?.isPremium !== true && !/\bpremium\b/.test(text);
+            });
+            safeRender(free);
+            document.getElementById('channelListContainer')?.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function premiumView() {
+            closeAllOverlayPages();
+            setBottomNavActive('premium');
+            const premium = channels.filter(c => {
+                const text = `${c?.name || ''} ${c?.group || ''}`.toLowerCase();
+                return c?.premium === true || c?.isPremium === true || /\bpremium\b/.test(text);
+            });
+            safeRender(premium);
+            document.getElementById('channelListContainer')?.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        function trendingView() {
+            closeAllOverlayPages();
+            setBottomNavActive('trending');
+            const trending = [...channels].sort((a, b) => {
+                const wa = watchedChannels.has(channelKey(a)) ? 1 : 0;
+                const wb = watchedChannels.has(channelKey(b)) ? 1 : 0;
+                return wb - wa;
+            });
+            safeRender(trending);
+            document.getElementById('channelListContainer')?.scrollTo({top:0, behavior:'smooth'});
+        }
+
+        bottomNavItems.forEach(item => item.addEventListener('click', e => {
+            e.preventDefault();
+            const nav = item.dataset.nav;
+            switch (nav) {
+                case 'home': homeView(); break;
+                case 'live': liveView(); break;
+                case 'free': freeView(); break;
+                case 'premium': premiumView(); break;
+                case 'trending': trendingView(); break;
+            }
+        }));
 
         // ================= INITIALIZE (Fast Load from Cache) =================
         window.onload = () => {
